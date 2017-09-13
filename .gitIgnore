@@ -10,3 +10,4 @@ target/main/resources/gh car/*
 target/classes/gh car/*
 !target/routeOptimizerWebApp/WEB-INF/classes/gh car/
 target/routeOptimizerWebApp/WEB-INF/classes/gh car/*
+/target/
