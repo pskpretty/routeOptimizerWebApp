@@ -1,0 +1,12 @@
+*.class
+*.war
+*.pbf
+*.jar
+!src/main/resources/gh car/
+src/main/resources/gh car/*
+!target/main/resources/gh car/
+target/main/resources/gh car/*
+!target/classes/gh car/
+target/classes/gh car/*
+!target/routeOptimizerWebApp/WEB-INF/classes/gh car/
+target/routeOptimizerWebApp/WEB-INF/classes/gh car/*

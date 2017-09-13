@@ -1,16 +1,8 @@
 package com.qut.routeOptimizerWebApp;
 
-import java.io.IOException;
+import org.springframework.stereotype.Controller;
 
-import com.graphhopper.GHRequest;
-import com.graphhopper.GHResponse;
-import com.graphhopper.GraphHopper;
-import com.graphhopper.routing.util.EncodingManager;
-import com.graphhopper.util.Instruction;
-import com.graphhopper.util.shapes.GHPoint;
-import com.qut.routeOptimizer.main.Main;
-import com.qut.routeOptimizer.main.RouteOptimzerProperties;
-@Controller
+
 public class MainClass {
 /*public String getReponse(NavigationPosition source,NavigationPosition destination,String vehicle) {
 	 String s = "";
