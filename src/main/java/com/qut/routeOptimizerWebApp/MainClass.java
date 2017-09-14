@@ -1,10 +1,11 @@
 package com.qut.routeOptimizerWebApp;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
@@ -12,7 +13,7 @@ import com.graphhopper.GraphHopper;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.util.Instruction;
 import com.graphhopper.util.shapes.GHPoint;
-import com.qut.routeOptimizerWebApp.Bean.Location;
+import com.qut.routeOptimizerWebApp.Bean.UploadInvoiceBean;
 
 @Controller
 
@@ -24,15 +25,15 @@ public class MainClass {
 	}
 	
 	@RequestMapping(
-		      headers =" Accept=application/json",value = "/distance",method = RequestMethod.POST)
+		   value = "/distance",method = RequestMethod.GET)
 	@ResponseBody
-	public String getDistance(@RequestBody Location source,Location destination) {
+	public ModelAndView getDistance(@ModelAttribute("UPLOAD_INVOICE_BEAN") UploadInvoiceBean uploadBean) {
 		String s = "";
 		GraphHopper graphHopper = new GraphHopper().setGraphHopperLocation(RouteOptimzerProperties.hopperDirectory)
 				.setEncodingManager(new EncodingManager("car")).setOSMFile(RouteOptimzerProperties.osmFilePath);
 		graphHopper.importOrLoad();
-		GHRequest request = new GHRequest().addPoint(new GHPoint(Double.parseDouble(source.getLatitude()), Double.parseDouble(source.getLongitude())))
-				.addPoint(new GHPoint(Double.parseDouble(destination.getLatitude()), Double.parseDouble(destination.getLongitude())));
+		GHRequest request = new GHRequest().addPoint(new GHPoint(Double.parseDouble(uploadBean.getSourcelat()), Double.parseDouble(uploadBean.getSourcelon())))
+				.addPoint(new GHPoint(Double.parseDouble(uploadBean.getDestinationlat()), Double.parseDouble(uploadBean.getDestinationlon())));
 		request.putHint("calcPoints", false);
 		request.putHint("instructions", true);
 		request.setVehicle("car"); 
@@ -44,6 +45,8 @@ public class MainClass {
 						+ "\n" + "sign <int>:" + i.getSign() + "\n" + "Points <PointsList>: " + i.getPoints() + "\n";
 			}
 		}
-		return s;
+		ModelAndView model=new ModelAndView("index");
+		model.addObject("msg", s);
+		return model;
 	}
 }
