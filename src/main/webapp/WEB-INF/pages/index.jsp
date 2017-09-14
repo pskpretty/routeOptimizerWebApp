@@ -3,28 +3,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
 </script>
 <script type="text/javascript">
-alert("hi");
+
 $(document).ready(function () {
     $('#search').click(function () {
         jQuery.support.cors = true;
-         var source = [];
-         source[0] = Number($('#sourcelat').val()).toFixed(2);
-         source[1] = Number($('#sourcelon').val()).toFixed(2);
-	var destiation=[];
-	destiation[0] = Number($('#destinationlat').val()).toFixed(2);
-	destiation[1] = Number($('#destinationlon').val()).toFixed(2);
+      
+         var sourcelatitude = document.getElementById('sourcelat').value;
+         var sourceLongitude = document.getElementById('sourcelon').value;
+         var source ={"latitude":sourcelatitude,"longitude":sourceLongitude}
+         var destinationlatitude = document.getElementById('destinationlat').value;
+         var destinationLongitude = document.getElementById('destinationlon').value;
+         var destination ={"latitude":destinationlatitude,"longitude":destinationLongitude}
+
         $.ajax(
             {
-                type: "GET",
-                url:'http://localhost:8080/routing/distance',
-                        data: {"sourceArray":JSON.stringify(source),"destinationArray":JSON.stringify(destiation)
-                            },
+                type: "POST",
+                url:'distance',
+                data: {'source':source,'destination':destination},
                 contentType: "application/json; charset=utf-8",
-                dataType: "json",
+                mimeType: 'application/json',
+                dataType: 'json',
                 success: function (response) {
-			console.log("success"+response);
+					console.log("success"+response);
                     alert('success'+response);
-                
+                return false;
                 },
                 error: function (msg, url, line) {
                     alert('error trapped in error: function(msg, url, line)');
@@ -32,9 +34,6 @@ $(document).ready(function () {
 
                 }
             });
-
-
-        alert('button click');
 
     });
 });
