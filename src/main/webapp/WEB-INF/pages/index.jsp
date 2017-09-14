@@ -1,9 +1,10 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-
+</script>
+<script type="text/javascript">
+alert("hi");
 $(document).ready(function () {
-
     $('#search').click(function () {
         jQuery.support.cors = true;
          var source = [];
@@ -50,7 +51,7 @@ $(document).ready(function () {
 			Source Longitude<input id="sourcelon" type="text" /><br/>
 			 Destination Latitude<input id="destinationlat" type="text" />  <br/>
 			 Destination Longitude<input id="destinationlon" type="text" /><br/>
-			<button id="search">Find me a distance</button><br/>
+			<button id="search" name="search">Find me a distance</button><br/>
 		</form>
 	
 </body>

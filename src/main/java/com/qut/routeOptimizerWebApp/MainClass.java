@@ -21,7 +21,7 @@ public class MainClass {
 	    return "index";
 	}
 	
-	@RequestMapping(value = "distance",method = RequestMethod.GET)
+	@RequestMapping(value = "/distance",method = RequestMethod.GET)
 	public String getDistance(@RequestParam(value="sourceArray[]") String[] sourceArray, @RequestParam(value="destinationArray[]") String[] destinationArray) {
 		String s = "";
 		GraphHopper graphHopper = new GraphHopper().setGraphHopperLocation(RouteOptimzerProperties.hopperDirectory)
