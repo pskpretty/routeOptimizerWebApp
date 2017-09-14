@@ -19,14 +19,12 @@ import com.qut.routeOptimizerWebApp.Bean.UploadInvoiceBean;
 
 public class MainClass {
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
 	    return "index";
 	}
 	
-	@RequestMapping(
-		   value = "/distance",method = RequestMethod.GET)
-	@ResponseBody
+	@RequestMapping(value = "/distance",method = RequestMethod.GET)
 	public ModelAndView getDistance(@ModelAttribute("UPLOAD_INVOICE_BEAN") UploadInvoiceBean uploadBean) {
 		String s = "";
 		GraphHopper graphHopper = new GraphHopper().setGraphHopperLocation(RouteOptimzerProperties.hopperDirectory)
