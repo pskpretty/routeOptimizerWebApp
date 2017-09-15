@@ -16,38 +16,45 @@ import com.graphhopper.GraphHopper;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.util.Instruction;
 import com.graphhopper.util.shapes.GHPoint;
-import com.qut.routeOptimizerWebApp.Bean.Location;
-import com.qut.routeOptimizerWebApp.Bean.LocationList;
+import com.qut.routeOptimizerWebApp.Bean.Address;
+import com.qut.routeOptimizerWebApp.Bean.AddressList;
 
 @Controller
 
 public class MainClass {
-	
+	private static List<Address> addresses = new ArrayList<Address>();
+
+	static {
+		addresses.add(new Address("Barack", "Obama"));
+		addresses.add(new Address("George", "Bush"));
+		
+	}
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
 	    return "index";
 	}
 	
-	public List<GHPoint> locationToGraphHopper(LocationList locationList){
-		List<GHPoint> ghList=new ArrayList<GHPoint>();
-		GHPoint ghPoint=new GHPoint();
-		Iterator<Location> iterator = locationList.iterator();
-		while(iterator.hasNext()){
-			ghPoint.lat=Double.parseDouble(iterator.next().getLatitude());
-			ghPoint.lon=Double.parseDouble(iterator.next().getLongitude());
-			ghList.add(ghPoint);
-		}
-		return ghList;
+	@RequestMapping(value = "/getLocationCount", method = RequestMethod.GET)
+	public ModelAndView inputLocation() {
+		AddressList locationList=new AddressList();
+		locationList.setAddresses(addresses);
+		return new ModelAndView("add_location" , "locationList", locationList);
 	}
-	@RequestMapping(value = "/distance",method = RequestMethod.GET)
-	public ModelAndView getDistance(@ModelAttribute("UPLOAD_INVOICE_BEAN") LocationList locationList) {
+	
+	@RequestMapping(value = "/save",method = RequestMethod.POST)
+	public ModelAndView getDistance(@ModelAttribute("locationList") AddressList locationList) {
 		String s = "";
 		GraphHopper graphHopper = new GraphHopper().setGraphHopperLocation(RouteOptimzerProperties.hopperDirectory)
 				.setEncodingManager(new EncodingManager("car")).setOSMFile(RouteOptimzerProperties.osmFilePath);
 		graphHopper.importOrLoad();
 		List<GHPoint> ghList=new ArrayList<GHPoint>();
-		MainClass main=new MainClass();
-		ghList=main.locationToGraphHopper(locationList);
+		GHPoint ghPoint=new GHPoint();
+		Iterator<Address> iterator = locationList.iterator();
+		while(iterator.hasNext()){
+			ghPoint.lat=Double.parseDouble(iterator.next().getLatitude());
+			ghPoint.lon=Double.parseDouble(iterator.next().getLongitude());
+			ghList.add(ghPoint);
+		}
 		GHRequest request = new GHRequest(ghList);
 		request.putHint("calcPoints", false);
 		request.putHint("instructions", true);
@@ -61,6 +68,7 @@ public class MainClass {
 			}
 		}
 		ModelAndView model=new ModelAndView("index");
+		System.out.println(s);
 		model.addObject("msg", s);
 		return model;
 	}
