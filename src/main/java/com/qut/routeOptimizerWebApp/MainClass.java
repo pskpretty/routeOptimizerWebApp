@@ -1,7 +1,6 @@
 package com.qut.routeOptimizerWebApp;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -44,15 +43,19 @@ public class MainClass {
 	@RequestMapping(value = "/save",method = RequestMethod.POST)
 	public ModelAndView getDistance(@ModelAttribute("locationList") AddressList locationList) {
 		String s = "";
-		GraphHopper graphHopper = new GraphHopper().setGraphHopperLocation(RouteOptimzerProperties.hopperDirectory)
-				.setEncodingManager(new EncodingManager("car")).setOSMFile(RouteOptimzerProperties.osmFilePath);
+		RouteOptimzerProperties routeOptimzerProperties=new RouteOptimzerProperties();
+		System.out.println(routeOptimzerProperties.hopperDirectory);
+		System.out.println(routeOptimzerProperties.osmFilePath);
+		GraphHopper graphHopper = new GraphHopper().setGraphHopperLocation(routeOptimzerProperties.hopperDirectory)
+				.setEncodingManager(new EncodingManager("car")).setOSMFile(routeOptimzerProperties.osmFilePath);
 		graphHopper.importOrLoad();
 		List<GHPoint> ghList=new ArrayList<GHPoint>();
 		GHPoint ghPoint=new GHPoint();
-		Iterator<Address> iterator = locationList.iterator();
-		while(iterator.hasNext()){
-			ghPoint.lat=Double.parseDouble(iterator.next().getLatitude());
-			ghPoint.lon=Double.parseDouble(iterator.next().getLongitude());
+		for(Address address:locationList)
+		{
+			System.out.println(address.getLatitude());
+			ghPoint.lat=Double.parseDouble(address.getLatitude());
+			ghPoint.lon=Double.parseDouble(address.getLongitude());
 			ghList.add(ghPoint);
 		}
 		GHRequest request = new GHRequest(ghList);
@@ -60,6 +63,7 @@ public class MainClass {
 		request.putHint("instructions", true);
 		request.setVehicle("car"); 
 		GHResponse ghResponse = graphHopper.route(request);
+		System.out.println("hello"+request.toString());
 		if (ghResponse.getInstructions() != null) {
 			for (Instruction i : ghResponse.getInstructions()) {
 				s += "------>\ntime <long>: " + i.getTime() + "\n" + "name: street name" + i.getName() + "\n"
@@ -67,9 +71,12 @@ public class MainClass {
 						+ "\n" + "sign <int>:" + i.getSign() + "\n" + "Points <PointsList>: " + i.getPoints() + "\n";
 			}
 		}
+		System.out.println("hello"+s);
+		locationList.setStatus("SUCCESS");
 		ModelAndView model=new ModelAndView("index");
-		System.out.println(s);
+		System.out.println("hello"+s);
 		model.addObject("msg", s);
+		model.addObject("locationList", locationList);
 		return model;
 	}
 }

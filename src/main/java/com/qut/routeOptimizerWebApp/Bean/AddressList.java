@@ -5,6 +5,14 @@ import java.util.List;
 
 public class AddressList implements Iterable<Address>{
 	private List<Address> addresses;
+	private String status;
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public List<Address> getAddresses() {
 		return addresses;
