@@ -1,58 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/jquery.form.js"></script>
+<script type="text/javascript">
 $(document).ready(function () {
-
-    $('#search').click(function () {
-        jQuery.support.cors = true;
-         var source = [];
-         source[0] = Number($('#sourcelat').val()).toFixed(2);
-         source[1] = Number($('#sourcelon').val()).toFixed(2);
-	var destiation=[];
-	destiation[0] = Number($('#destinationlat').val()).toFixed(2);
-	destiation[1] = Number($('#destinationlon').val()).toFixed(2);
-        $.ajax(
-            {
-                type: "GET",
-                url:'http://localhost:8080/routing/distance',
-                        data: {"sourceArray":JSON.stringify(source),"destinationArray":JSON.stringify(destiation)
-                            },
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-			console.log("success"+response);
-                    alert('success'+response);
-                
-                },
-                error: function (msg, url, line) {
-                    alert('error trapped in error: function(msg, url, line)');
-                    alert('msg = ' + msg + ', url = ' + url + ', line = ' + line);
-
-                }
-            });
-
-
-        alert('button click');
-
-    });
-});
-
-</script>  
+	
+	$invProcessRqstForm = $('#routeOptimizerForm');
+	$invProcessRqstForm.ajaxForm({  success: loadCreateInvProcRqst });
+	
+	function loadCreateInvProcRqst(responseText, statusText) {
+		$('#routeOptimizerDiv').html($.trim(responseText));
+		$(window).scrollTop(0);
+	}
+	function addinputFields(){
+	    var locationCounter = document.getElementById("locationCount").value;
+	}
+}); 
+</script>
 </head>
 <body>
-
-		<form
-        id = "form"
-        action = "#"
-        name = "form">
-			Source Latitude<input id="sourcelat" type="text" /><br/>
-			Source Longitude<input id="sourcelon" type="text" /><br/>
-			 Destination Latitude<input id="destinationlat" type="text" />  <br/>
-			 Destination Longitude<input id="destinationlon" type="text" /><br/>
-			<button id="search">Find me a distance</button><br/>
+	Number of location:
+	<input type="number" name="locationCount" id="locationCount" >
+	<br />
+	<button id="btn" onclick="addinputFields()">Add</button>
+	<div id="routeOptimizerDiv">
+		<form id="routeOptimizerForm" action="distance.do"
+			name="routeOptimizerForm">
+			<c:forEach items="${locationList}" var="location" begin="1"
+				end="locationCounter" varStatus="counter">
+				<table>
+					<tr>
+						<td><label for="Latitude"> Latitude</label></td>
+						<td><input id="latitude" name="latitude${counter.index }"
+							type="text" value="${location.latitude}" /></td>
+					</tr>
+					<tr>
+						<td><label for="Longitude">Source Longitude</label></td>
+						<td><input id="longitude" name="longitude" type="text"
+							value="${location.longitude}" /></td>
+					</tr>
+				</table>
+				<hr />
+			</c:forEach>
+			<button id="search" name="search">Find me a distance</button><br/>
 		</form>
-	
+	</div>
 </body>
 
 </html>

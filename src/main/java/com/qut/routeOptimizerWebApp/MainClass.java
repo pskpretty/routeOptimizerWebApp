@@ -1,10 +1,13 @@
 package com.qut.routeOptimizerWebApp;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.graphhopper.GHRequest;
@@ -13,7 +16,8 @@ import com.graphhopper.GraphHopper;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.util.Instruction;
 import com.graphhopper.util.shapes.GHPoint;
-import com.qut.routeOptimizerWebApp.Bean.UploadInvoiceBean;
+import com.qut.routeOptimizerWebApp.Bean.Location;
+import com.qut.routeOptimizerWebApp.Bean.LocationList;
 
 @Controller
 
@@ -24,14 +28,27 @@ public class MainClass {
 	    return "index";
 	}
 	
+	public List<GHPoint> locationToGraphHopper(LocationList locationList){
+		List<GHPoint> ghList=new ArrayList<GHPoint>();
+		GHPoint ghPoint=new GHPoint();
+		Iterator<Location> iterator = locationList.iterator();
+		while(iterator.hasNext()){
+			ghPoint.lat=Double.parseDouble(iterator.next().getLatitude());
+			ghPoint.lon=Double.parseDouble(iterator.next().getLongitude());
+			ghList.add(ghPoint);
+		}
+		return ghList;
+	}
 	@RequestMapping(value = "/distance",method = RequestMethod.GET)
-	public ModelAndView getDistance(@ModelAttribute("UPLOAD_INVOICE_BEAN") UploadInvoiceBean uploadBean) {
+	public ModelAndView getDistance(@ModelAttribute("UPLOAD_INVOICE_BEAN") LocationList locationList) {
 		String s = "";
 		GraphHopper graphHopper = new GraphHopper().setGraphHopperLocation(RouteOptimzerProperties.hopperDirectory)
 				.setEncodingManager(new EncodingManager("car")).setOSMFile(RouteOptimzerProperties.osmFilePath);
 		graphHopper.importOrLoad();
-		GHRequest request = new GHRequest().addPoint(new GHPoint(Double.parseDouble(uploadBean.getSourcelat()), Double.parseDouble(uploadBean.getSourcelon())))
-				.addPoint(new GHPoint(Double.parseDouble(uploadBean.getDestinationlat()), Double.parseDouble(uploadBean.getDestinationlon())));
+		List<GHPoint> ghList=new ArrayList<GHPoint>();
+		MainClass main=new MainClass();
+		ghList=main.locationToGraphHopper(locationList);
+		GHRequest request = new GHRequest(ghList);
 		request.putHint("calcPoints", false);
 		request.putHint("instructions", true);
 		request.setVehicle("car"); 

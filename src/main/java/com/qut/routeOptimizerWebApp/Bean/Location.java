@@ -1,6 +1,9 @@
 package com.qut.routeOptimizerWebApp.Bean;
 
+import java.util.List;
+
 public class Location {
+
 private String latitude;
 private String longitude;
 public String getLatitude() {
