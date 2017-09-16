@@ -37,7 +37,7 @@ public class MainClass {
 	@RequestMapping(value = "/getLocationCount", method = RequestMethod.GET)
 	public ModelAndView inputLocation() {
 		UploadInvoiceBean locationList=new UploadInvoiceBean();
-		locationList.setAddresses(addresses);
+		locationList.setLocationList(addresses);
 		return new ModelAndView("add_location" , "locationList", locationList);
 	}
 	

@@ -4,7 +4,15 @@ import java.util.Iterator;
 import java.util.List;
 
 public class UploadInvoiceBean implements Iterable<Location>{
-	private List<Location> addresses;
+	private List<Location> locationList;
+	public List<Location> getLocationList() {
+		return locationList;
+	}
+
+	public void setLocationList(List<Location> locationList) {
+		this.locationList = locationList;
+	}
+
 	private String status;
 	public String getStatus() {
 		return status;
@@ -14,17 +22,10 @@ public class UploadInvoiceBean implements Iterable<Location>{
 		this.status = status;
 	}
 
-	public List<Location> getAddresses() {
-		return addresses;
-	}
-
-	public void setAddresses(List<Location> addresses) {
-		this.addresses = addresses;
-	}
 
 	@Override
 	public Iterator<Location> iterator() {        
-        Iterator<Location> iprof = addresses.iterator();
+        Iterator<Location> iprof = locationList.iterator();
         return iprof; 
     }
 }
