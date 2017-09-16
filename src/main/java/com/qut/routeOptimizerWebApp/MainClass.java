@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,17 +16,17 @@ import com.graphhopper.GraphHopper;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.util.Instruction;
 import com.graphhopper.util.shapes.GHPoint;
-import com.qut.routeOptimizerWebApp.Bean.Address;
-import com.qut.routeOptimizerWebApp.Bean.AddressList;
+import com.qut.routeOptimizerWebApp.Bean.Location;
+import com.qut.routeOptimizerWebApp.Bean.UploadInvoiceBean;
 
 @Controller
 
 public class MainClass {
-	private static List<Address> addresses = new ArrayList<Address>();
+	private static List<Location> addresses = new ArrayList<Location>();
 
 	static {
-		addresses.add(new Address("Barack", "Obama"));
-		addresses.add(new Address("George", "Bush"));
+		addresses.add(new Location("Barack", "Obama"));
+		addresses.add(new Location("George", "Bush"));
 		
 	}
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -35,13 +36,13 @@ public class MainClass {
 	
 	@RequestMapping(value = "/getLocationCount", method = RequestMethod.GET)
 	public ModelAndView inputLocation() {
-		AddressList locationList=new AddressList();
+		UploadInvoiceBean locationList=new UploadInvoiceBean();
 		locationList.setAddresses(addresses);
 		return new ModelAndView("add_location" , "locationList", locationList);
 	}
 	
 	@RequestMapping(value = "/save",method = RequestMethod.POST)
-	public ModelAndView getDistance(@ModelAttribute("locationList") AddressList locationList) {
+	public ModelAndView getDistance(@ModelAttribute("UPLOAD_INVOICE_BEAN") UploadInvoiceBean uploadInvoiceBean,Model model) {
 		String s = "";
 		RouteOptimzerProperties routeOptimzerProperties=new RouteOptimzerProperties();
 		System.out.println(routeOptimzerProperties.hopperDirectory);
@@ -51,7 +52,7 @@ public class MainClass {
 		graphHopper.importOrLoad();
 		List<GHPoint> ghList=new ArrayList<GHPoint>();
 		GHPoint ghPoint=new GHPoint();
-		for(Address address:locationList)
+		for(Location address:uploadInvoiceBean)
 		{
 			System.out.println(address.getLatitude());
 			ghPoint.lat=Double.parseDouble(address.getLatitude());
@@ -72,11 +73,10 @@ public class MainClass {
 			}
 		}
 		System.out.println("hello"+s);
-		locationList.setStatus("SUCCESS");
-		ModelAndView model=new ModelAndView("index");
+		uploadInvoiceBean.setStatus("SUCCESS");
 		System.out.println("hello"+s);
-		model.addObject("msg", s);
-		model.addObject("locationList", locationList);
-		return model;
+		model.addAttribute("msg", s);
+		model.addAttribute("locationList", uploadInvoiceBean);
+		return new ModelAndView("index","model", model);
 	}
 }

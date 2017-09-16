@@ -44,7 +44,7 @@
 	<div class="error_msg_long" id="routeOptErrMsg"></div>
 	</div>
 </div>
-<div id="routeOptSucContainer" <c:choose><c:when test="${locationList.status=='SUCCESS'}">style="display:block;"</c:when><c:otherwise>style="display: none;"</c:otherwise></c:choose>>
+<div id="routeOptSucContainer" <c:choose><c:when test="${uploadInvoiceBean.status=='SUCCESS'}">style="display:block;"</c:when><c:otherwise>style="display: none;"</c:otherwise></c:choose>>
 	<div class="divSuccess">
 	<div class="icon_alert"><img src="<%=request.getContextPath()%>/images/icon_success.png" width="13" height="11" title="Create Invoice Process" alt="Create Invoice Process" class="sucImg" /></div>
 	<div class="success_msg">Please refer the optimized route.</div>						
@@ -68,8 +68,8 @@
 	<thead>
 	<tr>
 	<th>Number</th>
-	<th>Longitude</th>
 	<th>Latitude</th>
+	<th>Longitude</th>
 	</tr>
 	</thead>
 	<tbody id="routeOptimizerTblBody">	

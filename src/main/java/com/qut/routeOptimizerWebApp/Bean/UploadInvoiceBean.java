@@ -3,8 +3,8 @@ package com.qut.routeOptimizerWebApp.Bean;
 import java.util.Iterator;
 import java.util.List;
 
-public class AddressList implements Iterable<Address>{
-	private List<Address> addresses;
+public class UploadInvoiceBean implements Iterable<Location>{
+	private List<Location> addresses;
 	private String status;
 	public String getStatus() {
 		return status;
@@ -14,17 +14,17 @@ public class AddressList implements Iterable<Address>{
 		this.status = status;
 	}
 
-	public List<Address> getAddresses() {
+	public List<Location> getAddresses() {
 		return addresses;
 	}
 
-	public void setAddresses(List<Address> addresses) {
+	public void setAddresses(List<Location> addresses) {
 		this.addresses = addresses;
 	}
 
 	@Override
-	public Iterator<Address> iterator() {        
-        Iterator<Address> iprof = addresses.iterator();
+	public Iterator<Location> iterator() {        
+        Iterator<Location> iprof = addresses.iterator();
         return iprof; 
     }
 }

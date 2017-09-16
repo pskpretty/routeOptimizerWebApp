@@ -78,7 +78,7 @@ function addLocation(){
 	if(noOfLoc!=0 || noOfLoc!=""){	
 		$("#routeOptimizerTbl").show();
 		for(i=0;i<noOfLoc;i++){		
-			//alert(i);
+			alert(i);
 			//$("#routeOptimizerTblBody tr").length;	
 			html = '<tr id="trId'+i+'" class="tabletr odd">'+
 			'<td>'+
