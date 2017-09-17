@@ -10,7 +10,9 @@ public class Location {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
-
+public Location() {
+	
+}
 	public String getLatitude() {
 		return latitude;
 	}

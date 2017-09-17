@@ -63,7 +63,7 @@
 </div>
 </fieldset>
 </div>
-	<form:form id="routeOptimizerForm" action="save.do" name="routeOptimizerForm" method="GET" modelAttribute="locations">
+	<form id="routeOptimizerForm" action="save.do" name="routeOptimizerForm" method="POST" >
 	<table id="routeOptimizerTbl" style="display:none;" class="display" width="100%">
 	<thead>
 	<tr>
@@ -83,7 +83,7 @@
  </div>
 </div>
 </div>
-</form:form>
+</form>
 </div>
 </div>
 </div>

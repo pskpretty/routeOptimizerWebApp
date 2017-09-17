@@ -9,6 +9,14 @@ public class UploadInvoiceBean {
 	public List<Location> getLocationList() {
 		return locationList;
 	}
+	public UploadInvoiceBean() {
+		
+	}
+	public UploadInvoiceBean(List<Location> locationList, String status) {
+		super();
+		this.locationList = locationList;
+		this.status = status;
+	}
 
 	public void setLocationList(List<Location> locationList) {
 		this.locationList = locationList;

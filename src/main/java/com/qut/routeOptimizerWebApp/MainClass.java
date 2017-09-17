@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,8 +26,8 @@ public class MainClass {
 	    return "index";
 	}
 	
-	@RequestMapping(value = "/save",method = RequestMethod.GET)
-	public ModelAndView getDistance(@ModelAttribute("locations") UploadInvoiceBean uploadInvoiceBean,Model model) {
+	@RequestMapping(value = "/save",method = RequestMethod.POST)
+	public ModelAndView getDistance(@ModelAttribute("locations") UploadInvoiceBean uploadInvoiceBean) {
 		String s = "";
 		RouteOptimzerProperties routeOptimzerProperties=new RouteOptimzerProperties();
 		System.out.println(routeOptimzerProperties.hopperDirectory);
@@ -59,11 +58,12 @@ public class MainClass {
 						+ "\n" + "sign <int>:" + i.getSign() + "\n" + "Points <PointsList>: " + i.getPoints() + "\n";
 			}
 		}
-		System.out.println("hello"+s);
+		ModelAndView model=new ModelAndView("index");
+		System.out.println(s);
 		uploadInvoiceBean.setStatus("SUCCESS");
-		System.out.println("hello"+s);
-		model.addAttribute("msg", s);
-		model.addAttribute("locationList", uploadInvoiceBean);
-		return new ModelAndView("index","model", model);
+		model.addObject("msg", s);
+		model.addObject("locationList", uploadInvoiceBean);
+		return model;
+		
 	}
 }
