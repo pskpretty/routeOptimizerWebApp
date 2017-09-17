@@ -63,7 +63,7 @@
 </div>
 </fieldset>
 </div>
-	<form id="routeOptimizerForm" action="save.do" name="routeOptimizerForm" method="POST">
+	<form:form id="routeOptimizerForm" action="save.do" name="routeOptimizerForm" method="GET" modelAttribute="locations">
 	<table id="routeOptimizerTbl" style="display:none;" class="display" width="100%">
 	<thead>
 	<tr>
@@ -80,12 +80,10 @@
 <div class="routeOptBtnRightSide">
 <div class="btn">
 <input tabindex="11" class="routeOptBtns" type="submit" value="Submit" name="routeOptSubmit" id="routeOptSubmit" onclick="return saveRouteOptimizer();" title="Submit"/>	
-<!-- <a tabindex="12" href="javascript:void(0);" id="delete" title="Reset" class="admin_delete" onclick="return deleteLegalEntity();">Reset</a>
- -->
  </div>
 </div>
 </div>
-</form>
+</form:form>
 </div>
 </div>
 </div>

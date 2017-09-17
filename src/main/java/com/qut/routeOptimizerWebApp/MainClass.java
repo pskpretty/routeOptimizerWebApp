@@ -20,29 +20,15 @@ import com.qut.routeOptimizerWebApp.Bean.Location;
 import com.qut.routeOptimizerWebApp.Bean.UploadInvoiceBean;
 
 @Controller
-
 public class MainClass {
-	private static List<Location> addresses = new ArrayList<Location>();
-
-	static {
-		addresses.add(new Location("Barack", "Obama"));
-		addresses.add(new Location("George", "Bush"));
-		
-	}
+	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
 	    return "index";
 	}
 	
-	@RequestMapping(value = "/getLocationCount", method = RequestMethod.GET)
-	public ModelAndView inputLocation() {
-		UploadInvoiceBean locationList=new UploadInvoiceBean();
-		locationList.setLocationList(addresses);
-		return new ModelAndView("add_location" , "locationList", locationList);
-	}
-	
-	@RequestMapping(value = "/save",method = RequestMethod.POST)
-	public ModelAndView getDistance(@ModelAttribute("UPLOAD_INVOICE_BEAN") UploadInvoiceBean uploadInvoiceBean,Model model) {
+	@RequestMapping(value = "/save",method = RequestMethod.GET)
+	public ModelAndView getDistance(@ModelAttribute("locations") UploadInvoiceBean uploadInvoiceBean,Model model) {
 		String s = "";
 		RouteOptimzerProperties routeOptimzerProperties=new RouteOptimzerProperties();
 		System.out.println(routeOptimzerProperties.hopperDirectory);
@@ -52,7 +38,8 @@ public class MainClass {
 		graphHopper.importOrLoad();
 		List<GHPoint> ghList=new ArrayList<GHPoint>();
 		GHPoint ghPoint=new GHPoint();
-		for(Location address:uploadInvoiceBean)
+		
+		for(Location address:uploadInvoiceBean.getLocationList())
 		{
 			System.out.println(address.getLatitude());
 			ghPoint.lat=Double.parseDouble(address.getLatitude());

@@ -77,6 +77,7 @@ function addLocation(){
 	var html="";
 	if(noOfLoc!=0 || noOfLoc!=""){	
 		$("#routeOptimizerTbl").show();
+		
 		for(i=0;i<noOfLoc;i++){		
 			alert(i);
 			//$("#routeOptimizerTblBody tr").length;	
@@ -91,7 +92,7 @@ function addLocation(){
 			'<input type="text" name="locationList['+i+'].latitude" id="latitude_'+i+'" value="" onkeypress="validateInteger(event)"/>'+
 			'</td>'+
 			'</tr>';
-			alert(html);
+			//alert(html);
 			$("#routeOptimizerTblBody").append(html);
 		}	
 	}else{
